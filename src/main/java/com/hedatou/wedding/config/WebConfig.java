@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,18 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.hedatou.wedding.web", useDefaultFilters = false, includeFilters = @Filter(Controller.class))
+@Import(WebSocketConfig.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("${resources.cache.period}")
     private int resourcesCachePeriod;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/public/**").addResourceLocations("/public/").setCachePeriod(resourcesCachePeriod);
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/")
+                .setCachePeriod(resourcesCachePeriod);
+    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholder() {
@@ -35,11 +44,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setPrefix("/WEB-INF/jsp/");
         resolver.setSuffix(".jsp");
         return resolver;
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/public/**").addResourceLocations("/public/").setCachePeriod(resourcesCachePeriod);
     }
 
 }
