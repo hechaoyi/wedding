@@ -1,0 +1,35 @@
+buildscript {
+  repositories { jcenter() }
+  dependencies { classpath "com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.1" }
+}
+apply plugin: "war"
+apply plugin: "eclipse"
+apply plugin: "jettyEclipse"
+
+sourceCompatibility = "1.7"
+tasks.withType(JavaCompile) { options.encoding = "UTF-8" }
+eclipse.classpath.defaultOutputDir = file("$buildDir/output")
+jettyEclipse.contextPath = "/"
+
+repositories { mavenCentral() }
+dependencies {
+  // framework
+  compile "org.springframework:spring-webmvc:4.0.3.RELEASE"
+  providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+  // log
+  compile "org.slf4j:slf4j-api:1.7.6"
+  runtime "org.slf4j:jcl-over-slf4j:1.7.6"
+  runtime "ch.qos.logback:logback-classic:1.1.2"
+}
+configurations {
+  compile.exclude module: "commons-logging"
+}
+
+task listJars << {
+  println "compile:"
+  configurations.compile
+    .collect{ it.name }.sort().each{ println "\t"+it }
+  println "runtime:"
+  (configurations.runtime-configurations.compile)
+    .collect{ it.name }.sort().each{ println "\t"+it }
+}
