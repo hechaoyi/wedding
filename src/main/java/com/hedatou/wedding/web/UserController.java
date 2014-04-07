@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
-    @RequestMapping("/chat")
-    public void chat() {
-
+    @RequestMapping("/chatroom")
+    public void chatroom() {
     }
 
     @RequestMapping("/blessing")
@@ -17,9 +16,19 @@ public class UserController {
 
     }
 
-    @RequestMapping("/logout")
-    public void logout() {
+    @RequestMapping("/explore")
+    public void explore() {
 
+    }
+
+    @RequestMapping("/aboutUs")
+    public void aboutUs() {
+
+    }
+
+    @RequestMapping("/logout")
+    public String logout() {
+        return "redirect:/user/chatroom";
     }
 
 }
