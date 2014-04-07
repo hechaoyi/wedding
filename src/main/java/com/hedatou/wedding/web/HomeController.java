@@ -1,7 +1,5 @@
 package com.hedatou.wedding.web;
 
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,28 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @RequestMapping("/")
-    public String index() {
-        return "index";
+    public void index() {
+        // 首次访问，跳转到注册页
+        // 登录状态，跳转到用户首页
+        // 非登录状态，显示可登录列表
     }
 
-    @MessageMapping("/request")
-    @SendTo("/topic/response")
-    public Wrapper hello(Wrapper request) {
-        Wrapper response = new Wrapper();
-        response.setMsg("Hello, " + request.getMsg());
-        return response;
-    }
-
-    public static class Wrapper {
-        private String msg;
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
+    @RequestMapping("/register")
+    public void register() {
 
     }
 
