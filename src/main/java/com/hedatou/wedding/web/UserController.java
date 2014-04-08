@@ -9,6 +9,7 @@ public class UserController {
 
     @RequestMapping("/chatroom")
     public void chatroom() {
+
     }
 
     @RequestMapping("/blessing")

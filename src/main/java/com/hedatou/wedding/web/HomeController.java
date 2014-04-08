@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @RequestMapping("/")
-    public void index() {
+    public String index() {
         // 首次访问，跳转到注册页
         // 登录状态，跳转到用户首页
         // 非登录状态，显示可登录列表
+        return "index";
     }
 
     @RequestMapping("/register")

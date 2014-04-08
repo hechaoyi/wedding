@@ -10,15 +10,15 @@
   <body>
 
     <nav class="bar bar-tab">
-      <a class="tab-item" href="/user/chatroom" data-transition="slide-out">
+      <a class="tab-item" href="/user/chatroom">
         <span class="icon icon-home"></span>
         <span class="tab-label">聊天</span>
       </a>
-      <a class="tab-item" href="/user/blessing" data-transition="slide-out">
+      <a class="tab-item" href="/user/blessing">
         <span class="icon icon-compose"></span>
         <span class="tab-label">祝词</span>
       </a>
-      <a class="tab-item" href="/user/explore" data-transition="slide-out">
+      <a class="tab-item" href="/user/explore">
         <span class="icon icon-search"></span>
         <span class="tab-label">探索</span>
       </a>
@@ -26,7 +26,7 @@
         <span class="icon icon-person"></span>
         <span class="tab-label">关于我们</span>
       </a>
-      <a class="tab-item" href="/user/logout" data-transition="slide-out">
+      <a class="tab-item" href="/user/logout" data-ignore="push">
         <span class="icon icon-more"></span>
         <span class="tab-label">切换用户</span>
       </a>
@@ -39,5 +39,6 @@
     </div>
 
     <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
+    <script src="/public/user.js"></script>
   </body>
 </html>
