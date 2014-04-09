@@ -7,10 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 @Configuration
 @ComponentScan(basePackages = "com.hedatou.wedding", useDefaultFilters = true, excludeFilters = @Filter({
-        Controller.class, Configuration.class }))
+        Controller.class, ControllerAdvice.class, Configuration.class }))
 public class AppConfig {
 
     @Bean

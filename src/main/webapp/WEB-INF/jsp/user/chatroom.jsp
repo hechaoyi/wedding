@@ -6,9 +6,18 @@
     <title>聊天</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet.min.css">
+    <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet-theme-ios.min.css">
   </head>
   <body>
 
+    <div class="content">
+      <div class="card">聊天</div>
+    </div>
+
+    <div class="bar bar-footer-secondary-tab">
+      <input type="text" placeholder="消息" id="message" />
+      <button class="btn btn-primary" onclick="USER.send()">发送</button>
+    </div>
     <nav class="bar bar-tab">
       <a class="tab-item active">
         <span class="icon icon-home"></span>
@@ -32,13 +41,9 @@
       </a>
     </nav>
 
-    <div class="content">
-      <p>
-        聊天
-      </p>
-    </div>
-
     <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
+    <script src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.0/stomp.min.js"></script>
     <script src="/public/user.js"></script>
   </body>
 </html>

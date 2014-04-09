@@ -39,6 +39,8 @@
     </div>
 
     <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
+    <script src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.0/stomp.min.js"></script>
     <script src="/public/user.js"></script>
   </body>
 </html>
