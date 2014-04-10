@@ -57,4 +57,29 @@ public class User {
         this.bless = bless;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (mobile == null) {
+            if (other.mobile != null)
+                return false;
+        } else if (!mobile.equals(other.mobile))
+            return false;
+        return true;
+    }
+
 }

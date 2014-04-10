@@ -38,7 +38,7 @@ public class HomeController {
         // 可登录列表不为空，显示列表页
         Set<User> users = userService.getUsers(availUserTokens);
         if (!CollectionUtils.isEmpty(users)) {
-            return "list";
+            return "list"; // TODO
         }
 
         // 首次访问，显示注册页

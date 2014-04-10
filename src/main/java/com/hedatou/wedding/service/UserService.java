@@ -165,4 +165,10 @@ public class UserService {
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
     }
 
+    public void logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("l", "");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
+
 }
