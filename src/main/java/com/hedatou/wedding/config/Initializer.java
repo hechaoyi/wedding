@@ -1,6 +1,7 @@
 package com.hedatou.wedding.config;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -28,6 +29,11 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
         encoding.setEncoding("UTF-8");
         encoding.setForceEncoding(true);
         return new Filter[] { encoding };
+    }
+
+    @Override
+    protected void customizeRegistration(Dynamic registration) {
+        registration.setInitParameter("dispatchOptionsRequest", "true");
     }
 
 }

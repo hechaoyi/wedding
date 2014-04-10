@@ -16,7 +16,7 @@
   <body>
 
     <header class="bar bar-nav">
-      <button class="btn pull-right">切换用户</button>
+      <button id="logoutBtn" class="btn pull-right">切换用户</button>
       <div class="segmented-control">
         <a class="control-item active chat" href="#chatroom">聊天</a>
         <a class="control-item" href="#blessing">祝词</a>
