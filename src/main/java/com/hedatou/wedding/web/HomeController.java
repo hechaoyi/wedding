@@ -52,17 +52,22 @@ public class HomeController {
         return "register1";
     }
 
-    @RequestMapping("/register/step1")
+    @RequestMapping("/sendVCode")
     @ResponseBody
     public StdJson sendVCode(String mobile) {
         userService.sendVCode(mobile);
         return StdJson.ok();
     }
 
-    @RequestMapping("/register/step2")
-    public String register2(String mobile) {
-        // 保存用户手机号
+    @RequestMapping("/saveMobile")
+    @ResponseBody
+    public StdJson saveMobile(String mobile, String vcode) {
 
+        return StdJson.ok();
+    }
+
+    @RequestMapping("/register/step2")
+    public String register2() {
         // 显示称谓注册页
         return "register2";
     }

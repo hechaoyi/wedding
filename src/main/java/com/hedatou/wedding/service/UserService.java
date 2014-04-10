@@ -56,10 +56,14 @@ public class UserService {
     }
 
     public void sendVCode(String mobile) {
+        Double timestamp = redisDao.zscore("vcode:last-send-time", mobile);
+        if (timestamp != null && System.currentTimeMillis() - timestamp.longValue() < 30000)
+            throw new BusinessException("您点击的太频繁了~请稍后再试");
         String vcode = String.format("%04d", new Random().nextInt(10000));
-        redisDao.set(String.format("vcode:mobile:%s", mobile), vcode);
-        String message = String.format("感谢您参与互动，您的验证码是%s。", vcode);
+        redisDao.setex(String.format("vcode:mobile:%s", mobile), vcode, 60 * 5);
+        String message = String.format("感谢您参与互动，您的验证码是%s，5分钟内有效。", vcode);
         smsService.send(mobile, message);
+        redisDao.zadd("vcode:last-send-time", mobile, System.currentTimeMillis());
     }
 
 }

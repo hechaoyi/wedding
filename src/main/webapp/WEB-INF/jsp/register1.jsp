@@ -15,7 +15,7 @@
     </header>
     <div class="content">
       <div class="card">
-        <form class="content-padded" action="/register/step2" method="post">
+        <div class="content-padded">
           <label>请输入您的手机号码</label>
           <p>输入手机号码后，点击发送验证码。稍后您会收到一条短信，在下方输入4位短信验证码后点击下一步</p>
           <div style="overflow:hidden">
@@ -24,10 +24,10 @@
               disabled="disabled">发送验证码</button>
           </div>
           <div style="overflow:hidden">
-            <input type="text" name="vcode" placeholder="短信验证码.." style="float:left; width:70%;" />
+            <input id="vcodeTxt" type="text" name="vcode" placeholder="短信验证码.." style="float:left; width:70%;" />
           </div>
-          <button class="btn btn-primary btn-block" disabled="disabled">下一步</button>
-        </form>
+          <button id="submitBtn" class="btn btn-primary btn-block" disabled="disabled">下一步</button>
+        </div>
       </div>
     </div>
 
