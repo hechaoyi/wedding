@@ -1,6 +1,6 @@
 package com.hedatou.wedding.web;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +37,7 @@ public class HomeController {
         }
 
         // 可登录列表不为空，显示列表页
-        List<User> users = userService.getUsers(availUserTokens);
+        Set<User> users = userService.getUsers(availUserTokens);
         if (!CollectionUtils.isEmpty(users)) {
             return "list";
         }
@@ -61,8 +61,9 @@ public class HomeController {
 
     @RequestMapping("/saveMobile")
     @ResponseBody
-    public StdJson saveMobile(String mobile, String vcode) {
-
+    public StdJson saveMobile(String mobile, String vcode, @CookieValue(value = "s", required = false) String source,
+            @CookieValue(value = "a", required = false) String availUserTokens, HttpServletResponse response) {
+        userService.register(mobile, vcode, source, availUserTokens, response);
         return StdJson.ok();
     }
 
