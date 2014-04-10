@@ -7,6 +7,9 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet.min.css">
     <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet-theme-ios.min.css">
+    <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
+    <script src="/public/zepto-1.1.3/zepto.min.js"></script>
+    <script src="/public/register1.js"></script>
   </head>
   <body>
 
@@ -31,8 +34,5 @@
       </div>
     </div>
 
-    <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
-    <script src="/public/zepto-1.1.3/zepto.min.js"></script>
-    <script src="/public/register1.js"></script>
   </body>
 </html>
