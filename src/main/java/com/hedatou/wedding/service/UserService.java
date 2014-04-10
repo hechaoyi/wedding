@@ -3,6 +3,9 @@ package com.hedatou.wedding.service;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,7 +17,7 @@ import com.hedatou.wedding.dao.RedisDao;
 import com.hedatou.wedding.domain.User;
 
 @Service
-public class AuthService {
+public class UserService {
 
     @Autowired
     private RedisDao redisDao;
@@ -39,6 +42,14 @@ public class AuthService {
                 users.add(user);
         }
         return users;
+    }
+
+    public void rememberSource(String source, HttpServletResponse response) {
+        if (StringUtils.isEmpty(source))
+            source = "";
+        Cookie cookie = new Cookie("s", source);
+        cookie.setMaxAge(3600 * 24);
+        response.addCookie(cookie);
     }
 
 }

@@ -4,6 +4,7 @@ public class User {
 
     private String mobile;
     private String displayName;
+    private String source;
 
     public String getMobile() {
         return mobile;
@@ -19,6 +20,14 @@ public class User {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
 }
