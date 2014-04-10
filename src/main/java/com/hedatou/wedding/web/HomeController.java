@@ -2,7 +2,6 @@ package com.hedatou.wedding.web;
 
 import java.util.Set;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hedatou.wedding.domain.Category;
@@ -87,25 +85,11 @@ public class HomeController {
         return "register3";
     }
 
-    @RequestMapping("/register/step4")
-    public String register4(String bless) {
-        // 保存用户祝词
-
-        // 重定向到用户首页
-        return "redirect:/user/";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "login";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String key, String value, int age, HttpServletResponse response) {
-        Cookie c = new Cookie(key, value);
-        c.setMaxAge(age);
-        response.addCookie(c);
-        return "login";
+    @RequestMapping("/saveBless")
+    @ResponseBody
+    public StdJson saveBless(@CookieValue(value = "l", required = false) String token, String bless) {
+        userService.saveBless(token, bless);
+        return StdJson.ok("/user/");
     }
 
 }

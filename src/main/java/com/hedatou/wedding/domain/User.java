@@ -7,6 +7,7 @@ public class User {
     private Category category;
     private String name;
     private String displayName;
+    private String bless;
 
     public String getMobile() {
         return mobile;
@@ -46,6 +47,14 @@ public class User {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getBless() {
+        return bless;
+    }
+
+    public void setBless(String bless) {
+        this.bless = bless;
     }
 
 }

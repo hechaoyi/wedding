@@ -96,6 +96,7 @@ public class UserService {
         user.setCategory(Category.OTHER);
         user.setName("现场来宾");
         user.setDisplayName("现场来宾");
+        user.setBless("祝百年好合！");
         redisDao.set(String.format("user:mobile:%s:json", mobile), JsonUtils.toJson(user));
         redisDao.zadd("user:list", mobile, System.currentTimeMillis());
         // 生成token
@@ -152,6 +153,16 @@ public class UserService {
         // 发送短信
         String message = String.format("您已经注册成功，后续的祝词和发言，将会以[%s]作为昵称显示在大屏幕上，祝您今天玩得开心。", displayName);
         smsService.send(user.getMobile(), message);
+    }
+
+    public void saveBless(String token, String bless) {
+        User user = this.getUser(token);
+        if (user == null)
+            throw new BusinessException("注册信息不完整");
+        if (StringUtils.isEmpty(bless))
+            bless = "祝百年好合！";
+        user.setBless(bless);
+        redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
     }
 
 }
