@@ -11,9 +11,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hedatou.wedding.domain.User;
 import com.hedatou.wedding.service.UserService;
+import com.hedatou.wedding.web.util.StdJson;
 
 @Controller
 public class HomeController {
@@ -48,6 +50,13 @@ public class HomeController {
     public String register1() {
         // 显示手机号注册页
         return "register1";
+    }
+
+    @RequestMapping("/register/step1")
+    @ResponseBody
+    public StdJson sendVCode(String mobile) {
+        userService.sendVCode(mobile);
+        return StdJson.ok();
     }
 
     @RequestMapping("/register/step2")

@@ -25,4 +25,15 @@ public class RedisDao {
         }
     }
 
+    public void set(String key, String value) {
+        Jedis jedis = pool.getResource();
+        try {
+            jedis.set(key, value);
+            pool.returnResource(jedis);
+        } catch (JedisException e) {
+            pool.returnBrokenResource(jedis);
+            throw e;
+        }
+    }
+
 }

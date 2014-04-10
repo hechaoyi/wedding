@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class JsonUtils {
@@ -26,6 +27,16 @@ public abstract class JsonUtils {
             if (StringUtils.isEmpty(json))
                 return null;
             return mapper.readValue(json, clazz);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static JsonNode fromJson(String json) {
+        try {
+            if (StringUtils.isEmpty(json))
+                return null;
+            return mapper.readTree(json);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

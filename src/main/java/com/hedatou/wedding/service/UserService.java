@@ -2,6 +2,7 @@ package com.hedatou.wedding.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,8 @@ public class UserService {
 
     @Autowired
     private RedisDao redisDao;
+    @Autowired
+    private SmsService smsService;
 
     public User getUser(String token) {
         if (StringUtils.isEmpty(token))
@@ -50,6 +53,13 @@ public class UserService {
         Cookie cookie = new Cookie("s", source);
         cookie.setMaxAge(3600 * 24);
         response.addCookie(cookie);
+    }
+
+    public void sendVCode(String mobile) {
+        String vcode = String.format("%04d", new Random().nextInt(10000));
+        redisDao.set(String.format("vcode:mobile:%s", mobile), vcode);
+        String message = String.format("感谢您参与互动，您的验证码是%s。", vcode);
+        smsService.send(mobile, message);
     }
 
 }
