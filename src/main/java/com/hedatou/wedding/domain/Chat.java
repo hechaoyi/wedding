@@ -5,6 +5,7 @@ import java.util.Date;
 public class Chat {
 
     private String name;
+    private String mobi;
     private String msg;
     private Date time;
 
@@ -14,6 +15,14 @@ public class Chat {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMobi() {
+        return mobi;
+    }
+
+    public void setMobi(String mobi) {
+        this.mobi = mobi;
     }
 
     public String getMsg() {

@@ -25,6 +25,7 @@ public class ChatService {
         Date now = new Date();
         Chat chat = new Chat();
         chat.setName(user.getDisplayName());
+        chat.setMobi(user.getMobile());
         chat.setMsg(message);
         chat.setTime(now);
         redisDao.zadd("chat:list", JsonUtils.toJson(chat), now.getTime());

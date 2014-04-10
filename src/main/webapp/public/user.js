@@ -14,6 +14,7 @@ $(function() {
 	$("#messageTxt").on("keyup", check);
 	setInterval(check, 1000);
 
+	var me = $("#mobileHidden").val();
 	var connected = false;
 	var socket = new SockJS("/ws");
 	var stomp = Stomp.over(socket);
@@ -21,7 +22,14 @@ $(function() {
 		connected = true;
 		$("#sendBtn").prop("disabled", !$("#messageTxt").val());
 		stomp.subscribe("/topic/chat", function(data) {
-			alert(data);
+			var chat = JSON.parse(data.body);
+			var elem = $("<div></div>").addClass("message");
+			elem.addClass(chat.mobi == me ? "to" : "from");
+			if(chat.mobi == me)
+				elem.text(chat.msg);
+			else
+				elem.append($("<p></p>").text(chat.name)).append($("<div></div>").text(chat.msg));
+			$("#chatroom").append(elem).scrollTop($("#chatroom").height());
 		});
 	});
 	$("#sendBtn").on("click", function() {
