@@ -15,7 +15,7 @@
     </div>
 
     <div class="bar bar-footer-secondary-tab">
-      <input type="text" placeholder="消息" id="message" />
+      <input type="text" placeholder="消息" id="message" style="width:80%" />
       <button class="btn btn-primary" onclick="USER.send()">发送</button>
     </div>
     <nav class="bar bar-tab">
