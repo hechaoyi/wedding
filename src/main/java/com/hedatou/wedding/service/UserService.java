@@ -3,6 +3,7 @@ package com.hedatou.wedding.service;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.hedatou.wedding.common.JsonUtils;
 import com.hedatou.wedding.dao.RedisDao;
+import com.hedatou.wedding.domain.Category;
 import com.hedatou.wedding.domain.User;
 
 @Service
@@ -91,7 +93,11 @@ public class UserService {
         User user = new User();
         user.setMobile(mobile);
         user.setSource(StringUtils.isEmpty(source) ? "default" : source);
+        user.setCategory(Category.OTHER);
+        user.setName("现场来宾");
+        user.setDisplayName("现场来宾");
         redisDao.set(String.format("user:mobile:%s:json", mobile), JsonUtils.toJson(user));
+        redisDao.zadd("user:list", mobile, System.currentTimeMillis());
         // 生成token
         String temp = String.format("token-%s-%d", mobile, System.currentTimeMillis());
         String token = DigestUtils.md5DigestAsHex(temp.getBytes());
@@ -105,6 +111,47 @@ public class UserService {
         availCookie.setMaxAge(3600 * 24);
         response.addCookie(availCookie);
         logger.info("new user {}, source:{}, token:{}", mobile, source, token);
+    }
+
+    public void saveName(String token, Category category, String name) {
+        User user = this.getUser(token);
+        if (user == null || category == null)
+            throw new BusinessException("注册信息不完整");
+        user.setCategory(category);
+        user.setName(name);
+        boolean family = Pattern.compile("父|母|爷|奶|姥|舅|姑|姨|婶|爸|妈|伯|叔|嫂|哥|姐|弟|妹|媳|婿|侄|甥").matcher(name).find();
+        String displayName;
+        switch (category) {
+        case MALE_FAMILY:
+            displayName = family ? ("新郎的" + name) : ("新郎的家人" + name);
+            break;
+        case FEMALE_FAMILY:
+            displayName = family ? ("新娘的" + name) : ("新娘的家人" + name);
+            break;
+        case NEU_CLASSMATE:
+            displayName = "东大同学" + name;
+            break;
+        case MALE_CLASSMATE:
+            displayName = "新郎的同学" + name;
+            break;
+        case FEMALT_WORKMATE:
+            displayName = "新娘的同事" + name;
+            break;
+        case MALE_FATHER_FRIEND:
+            displayName = "新郎父亲的好友" + name;
+            break;
+        case MALE_MOTHER_FRIEND:
+            displayName = "新郎母亲的好友" + name;
+            break;
+        default:
+            displayName = "现场来宾" + name;
+            break;
+        }
+        user.setDisplayName(displayName);
+        redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
+        // 发送短信
+        String message = String.format("您已经注册成功，后续的祝词和发言，将会以[%s]作为昵称显示在大屏幕上，祝您今天玩得开心。", displayName);
+        smsService.send(user.getMobile(), message);
     }
 
 }

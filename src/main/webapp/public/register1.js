@@ -39,7 +39,7 @@ $(function() {
 			if(!data || data.code != 0) {
 				alert(data ? data.msg : "服务器出错啦~请稍后再试");
 			} else {
-				window.location.href = "/register/step2";
+				window.location.href = data.data;
 			}
 		});
 	});

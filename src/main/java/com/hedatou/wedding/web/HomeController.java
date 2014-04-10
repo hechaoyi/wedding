@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hedatou.wedding.domain.Category;
 import com.hedatou.wedding.domain.User;
 import com.hedatou.wedding.service.UserService;
 import com.hedatou.wedding.web.util.StdJson;
@@ -64,7 +65,7 @@ public class HomeController {
     public StdJson saveMobile(String mobile, String vcode, @CookieValue(value = "s", required = false) String source,
             @CookieValue(value = "a", required = false) String availUserTokens, HttpServletResponse response) {
         userService.register(mobile, vcode, source, availUserTokens, response);
-        return StdJson.ok();
+        return StdJson.ok("/register/step2");
     }
 
     @RequestMapping("/register/step2")
@@ -73,10 +74,15 @@ public class HomeController {
         return "register2";
     }
 
+    @RequestMapping("/saveName")
+    @ResponseBody
+    public StdJson saveName(@CookieValue(value = "l", required = false) String token, String category, String name) {
+        userService.saveName(token, Category.create(category), name);
+        return StdJson.ok("/register/step3");
+    }
+
     @RequestMapping("/register/step3")
     public String register3(String name) {
-        // 保存用户称谓
-
         // 显示祝词注册页
         return "register3";
     }

@@ -1,5 +1,8 @@
 package com.hedatou.wedding.service;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -25,6 +28,7 @@ public class SmsService {
     @Value("${sms.api.read.timeout}")
     private int readTimeout;
     private Client client;
+    private ExecutorService executor = Executors.newCachedThreadPool();
 
     @PostConstruct
     public void init() {
@@ -36,24 +40,29 @@ public class SmsService {
     @PreDestroy
     public void destroy() {
         client.destroy();
+        executor.shutdown();
     }
 
     public void send(String mobile, String message) {
         logger.info("send sms, mobile:{}, message:{}", mobile, message);
-        Form params = new Form();
+        final Form params = new Form();
         params.add("apikey", apiKey);
         params.add("mobile", mobile);
         params.add("tpl_id", "324223");
         params.add("tpl_value", String.format("#message#=%s", message));
-        String json = client.resource(YUNPIAN_URL).post(String.class, params);
-        logger.info("send sms, api result:{}", json);
-        JsonNode root = JsonUtils.fromJson(json);
-        if (root.has("code")) {
-            JsonNode code = root.get("code");
-            if (code.isIntegralNumber() && code.intValue() == 0)
-                return;
-        }
-        throw new RuntimeException("send sms failure, result:" + json);
+        executor.execute(new Runnable() {
+            public void run() {
+                String json = client.resource(YUNPIAN_URL).post(String.class, params);
+                logger.info("send sms, api result:{}", json);
+                JsonNode root = JsonUtils.fromJson(json);
+                if (root.has("code")) {
+                    JsonNode code = root.get("code");
+                    if (code.isIntegralNumber() && code.intValue() == 0)
+                        return;
+                }
+                logger.warn("send sms failure, result:{}", json);
+            }
+        });
     }
 
 }
