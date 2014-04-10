@@ -1,15 +1,13 @@
 $(function() {
-	$("#mobileTxt").on("keyup", function() {
-		var isMobile = /^\d{11}$/.test($(this).val())
-		var isVCode = /^\d{4}$/.test($("#vcodeTxt").val())
+	var check = function() {
+		var isMobile = /^\d{11}$/.test($("#mobileTxt").val());
+		var isVCode = /^\d{4}$/.test($("#vcodeTxt").val());
 		$("#sendVCodeBtn").prop("disabled", !isMobile);
 		$("#submitBtn").prop("disabled", !isMobile || !isVCode);
-	});
-	$("#vcodeTxt").on("keyup", function() {
-		var isMobile = /^\d{11}$/.test($("#mobileTxt").val())
-		var isVCode = /^\d{4}$/.test($(this).val())
-		$("#submitBtn").prop("disabled", !isMobile || !isVCode);
-	});
+	};
+	$("#mobileTxt").on("keyup", check);
+	$("#vcodeTxt").on("keyup", check);
+	setInterval(check, 1000);
 	$("#sendVCodeBtn").on("click", function() {
 		var btn = $("#sendVCodeBtn").prop("disabled", true);
 		(function(sec) {
@@ -17,7 +15,7 @@ $(function() {
 				btn.text(sec + "秒后重试");
 				var func = arguments.callee;
 				setTimeout(function() {
-					func(sec - 1)
+					func(sec - 1);
 				}, 1000);
 			} else {
 				btn.text("发送验证码").prop("disabled", false);

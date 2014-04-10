@@ -21,7 +21,7 @@
         <div class="content-padded">
           <label>送出您给我们的祝福吧~</label>
           <p>终于到最后一步了哟，亲~请在下方填写您的祝词，提交后请留意大屏幕。</p>
-          <textarea id="blessTxt" rows="5"></textarea>
+          <textarea id="blessTxt" rows="3"></textarea>
           <button id="submitBtn" class="btn btn-primary btn-block" disabled="disabled">完成注册</button>
         </div>
       </div>

@@ -1,7 +1,9 @@
 $(function() {
-	$("#blessTxt").on("keyup", function() {
+	var check = function() {
 		$("#submitBtn").prop("disabled", !$("#blessTxt").val());
-	});
+	};
+	$("#blessTxt").on("keyup", check);
+	setInterval(check, 1000);
 	$("#submitBtn").on("click", function() {
 		$.post("/saveBless", {
 			bless: $("#blessTxt").val()

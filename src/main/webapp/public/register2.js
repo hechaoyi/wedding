@@ -7,8 +7,9 @@ $(function() {
 		});
 		$("#submitBtn").prop("disabled", count == 0 || !$("#nameTxt").val());
 	};
-	$(".table-view-cell").on("click", check);
+	$(".table-view-cell input").on("change", check);
 	$("#nameTxt").on("keyup", check);
+	setInterval(check, 1000);
 	$("#submitBtn").on("click", function() {
 		var category;
 		$(".table-view-cell input").each(function() {

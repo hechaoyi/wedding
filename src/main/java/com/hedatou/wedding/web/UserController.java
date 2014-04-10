@@ -17,12 +17,7 @@ public class UserController {
 
     @RequestMapping("/")
     public String index() {
-        return "redirect:/user/chatroom";
-    }
-
-    @RequestMapping("/chatroom")
-    public void chatroom() {
-
+        return "user/index";
     }
 
     @RequestMapping("/logout")

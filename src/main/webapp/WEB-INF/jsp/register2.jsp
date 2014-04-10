@@ -20,6 +20,8 @@
       <div class="card">
         <div class="content-padded">
           <label>您怎么称呼？~</label>
+          <p>怎么称呼您比较方便？长辈建议输入称谓，如大姨、张老师、刘科长，平辈建议直接输入姓名</p>
+          <input id="nameTxt" type="text" name="name" placeholder="称谓或姓名.." />
           <p>您是谁的亲朋好友？请从下方列表中选择</p>
           <ul class="table-view">
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
@@ -55,8 +57,6 @@
               <label for="category_other" style="margin-left:20px">其他亲朋好友</label>
             </li>
           </ul>
-          <p>怎么称呼您比较方便？长辈建议输入称谓，如大姨、张老师、刘科长，平辈建议直接输入姓名</p>
-          <input id="nameTxt" type="text" name="name" placeholder="称谓或姓名.." />
           <button id="submitBtn" class="btn btn-primary btn-block" disabled="disabled">下一步</button>
         </div>
       </div>
