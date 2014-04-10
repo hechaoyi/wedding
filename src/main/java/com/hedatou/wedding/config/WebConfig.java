@@ -29,7 +29,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Value("${resources.cache.period}")
     private int resourcesCachePeriod;
     @Autowired
-    private HandlerInterceptor authenticateHandlerInterceptor;
+    private HandlerInterceptor authHandlerInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -40,7 +40,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticateHandlerInterceptor);
+        registry.addInterceptor(authHandlerInterceptor);
     }
 
     @Bean
