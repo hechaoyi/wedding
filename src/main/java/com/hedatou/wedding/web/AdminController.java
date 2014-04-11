@@ -1,15 +1,13 @@
 package com.hedatou.wedding.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hedatou.wedding.domain.User;
 import com.hedatou.wedding.service.LotteryService;
 import com.hedatou.wedding.service.UserService;
+import com.hedatou.wedding.web.util.StdJson;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,8 +35,8 @@ public class AdminController {
 
     @RequestMapping("/roll")
     @ResponseBody
-    public List<User> roll(int count) {
-        return lotteryService.roll(count);
+    public StdJson roll(int count) {
+        return StdJson.ok(lotteryService.roll(count));
     }
 
 }
