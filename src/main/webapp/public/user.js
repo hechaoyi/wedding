@@ -8,20 +8,13 @@ $(function() {
 	$("#logoutBtn").on("click", function() {
 		window.location.href = "/user/logout";
 	});
-	var check = function() {
-		$("#sendBtn").prop("disabled", !connected || !$("#messageTxt").val());
-	};
-	$("#messageTxt").on("keyup", check);
-	setInterval(check, 1000);
 
 	var token = /\bl=([^;]+)/.exec(document.cookie)[1];
 	var me = $("#mobileHidden").val();
-	var connected = false;
 	var socket = new SockJS("/ws");
 	var stomp = Stomp.over(socket);
-	stomp.connect({}, function() {
-		connected = true;
-		$("#sendBtn").prop("disabled", !$("#messageTxt").val());
+	stomp.connect({}, function(frame) {
+		$("#sendBtn").prop("disabled", false);
 		stomp.subscribe("/topic/chat", function(data) {
 			var chat = JSON.parse(data.body);
 			var elem = $("<div></div>").addClass("message");
@@ -30,15 +23,21 @@ $(function() {
 				elem.text(chat.msg);
 			else
 				elem.append($("<p></p>").text(chat.name)).append($("<div></div>").text(chat.msg));
-			$("#chatroom").append(elem).scrollTop($("#chatroom").height());
+			$("#chatroom").append(elem);
+			var scroll = $("#chatroom").height() - $(window).height() + 81;
+			$("#chatroom").scrollTop(scroll);
 		});
+	}, function() {
+		alert("与服务器的连接断开了，如需重连请刷新");
 	});
 	$("#sendBtn").on("click", function() {
+		var msg = $("#messageTxt").val();
+		if(!msg)
+			return;
 		stomp.send("/app/chat", {}, JSON.stringify({
 			token: token,
-			msg: encodeURI($("#messageTxt").val())
+			msg: encodeURI(msg)
 		}));
 		$("#messageTxt").val("");
-		$("#sendBtn").prop("disabled", true);
 	});
 })
