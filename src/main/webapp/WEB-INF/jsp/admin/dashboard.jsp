@@ -7,41 +7,33 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet.min.css">
     <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet-theme-ios.min.css">
-    <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
     <script src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.0/stomp.min.js"></script>
-    <script src="/public/zepto-1.1.3/zepto.min.js"></script>
-    <script src="/public/user.js"></script>
+    <script src="/webjars/jquery/2.1.0/jquery.min.js"></script>
+    <script src="/public/admin.js"></script>
     <style type="text/css">
 .message {
-    border-radius: 8px;
+    border-radius: 20px;
     margin: 0 15px 10px;
-    padding: 5px 10px;
+    padding: 15px 20px;
     position: relative;
-    font-size: 14px;
-}
-.message.to {
-    background-color: #2095FE;
-    color: #fff;
-    margin-left: 80px;
-}
-.message.from {
-    background-color: #E5E4E9;
-    color: #363636;
-    margin-right: 80px;
+    margin-right: 320px;
 }
 .message.admin {
     background-color: #2095FE;
     color: #fff;
-    margin-right: 80px;
 }
-.message.from p {
-	color: #cc00cc;
+.message.user {
+    background-color: #E5E4E9;
+    color: #363636;
 }
 .message.admin p {
 	color: #00ffff;
 }
-.message.to + .message.to, .message.from + .message.from, .message.admin + .message.admin {
+.message.user p {
+	color: #cc00cc;
+}
+.message.admin + .message.admin, .message.user + .message.user {
   margin-top: -7px;
 }
 .message:before {
@@ -54,48 +46,25 @@
     content: " ";
     height: 40px;
     position: absolute;
-    right: -50px;
+    left: -50px;
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    transform: rotateY(180deg);
     width: 30px;
     z-index: -1;
 }
-.message.from:before {
+.message.user:before {
     border-color: #E5E4E9;
-    left: -50px;
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
-}
-.message.admin:before {
-    left: -50px;
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
 }
 </style>
   </head>
   <body>
 
     <header class="bar bar-nav">
-      <input type="hidden" id="mobileHidden" value="${mobile}" />
-      <button id="logoutBtn" class="btn pull-right">切换用户</button>
-      <div class="segmented-control">
-        <a class="control-item active chat" href="#chatroom">聊天</a>
-        <a class="control-item" href="#blessing">祝词</a>
-        <a class="control-item" href="#explore">探索</a>
-        <a class="control-item" href="#aboutus">关于</a>
-      </div>
+      <h1 class="title">和超逸 &amp; 张伟伟 の 结婚典礼</h1>
     </header>
     <div class="content">
-      <div id="chatroom" class="content-padded control-content active" style="margin-bottom:47px"></div>
-      <div id="blessing" class="card control-content">
-        祝词
-      </div>
-      <div id="explore" class="card control-content">
-        探索
-      </div>
-      <div id="aboutus" class="card control-content">
-        关于
-      </div>
+      <div id="chatroom" class="content-padded" style="margin-bottom:47px"></div>
     </div>
     <div class="bar bar-footer" style="height:37px">
       <input id="messageTxt" type="text" placeholder="消息.."

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import com.hedatou.wedding.domain.Chat;
 import com.hedatou.wedding.service.ChatService;
+import com.hedatou.wedding.web.dto.ChatInputDto;
 
 @Controller
 public class WebSocketController {

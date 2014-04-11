@@ -8,6 +8,7 @@ public class User {
     private String name;
     private String displayName;
     private String bless;
+    private boolean admin;
 
     public String getMobile() {
         return mobile;
@@ -55,6 +56,14 @@ public class User {
 
     public void setBless(String bless) {
         this.bless = bless;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     @Override

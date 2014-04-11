@@ -8,6 +8,7 @@ public class Chat {
     private String mobi;
     private String msg;
     private Date time;
+    private boolean admin;
 
     public String getName() {
         return name;
@@ -39,6 +40,14 @@ public class Chat {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 }

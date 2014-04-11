@@ -1,4 +1,4 @@
-package com.hedatou.wedding.web;
+package com.hedatou.wedding.web.dto;
 
 public class ChatInputDto {
 

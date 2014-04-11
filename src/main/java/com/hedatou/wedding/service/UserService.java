@@ -38,7 +38,13 @@ public class UserService {
         if (StringUtils.isEmpty(mobile))
             return null;
         String userJson = redisDao.get(String.format("user:mobile:%s:json", mobile));
-        return JsonUtils.fromJson(userJson, User.class);
+        User user = JsonUtils.fromJson(userJson, User.class);
+        String adminName = redisDao.get(String.format("user:mobile:%s:admin", mobile));
+        if (!StringUtils.isEmpty(adminName)) {
+            user.setDisplayName(adminName);
+            user.setAdmin(true);
+        }
+        return user;
     }
 
     public Set<User> getUsers(String tokens) {

@@ -28,6 +28,7 @@ public class ChatService {
         chat.setMobi(user.getMobile());
         chat.setMsg(message);
         chat.setTime(now);
+        chat.setAdmin(user.isAdmin());
         redisDao.zadd("chat:list", JsonUtils.toJson(chat), now.getTime());
         return chat;
     }

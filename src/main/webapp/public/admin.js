@@ -1,16 +1,5 @@
 $(function() {
-	$(".control-item").on("click", function() {
-		if($(this).is(".chat"))
-			$(".bar-footer").show();
-		else
-			$(".bar-footer").hide();
-	});
-	$("#logoutBtn").on("click", function() {
-		window.location.href = "/user/logout";
-	});
-
 	var token = /\bl=([^;]+)/.exec(document.cookie)[1];
-	var me = $("#mobileHidden").val();
 	var socket = new SockJS("/ws");
 	var stomp = Stomp.over(socket);
 	stomp.connect({}, function() {
@@ -18,11 +7,8 @@ $(function() {
 		stomp.subscribe("/topic/chat", function(data) {
 			var chat = JSON.parse(data.body);
 			var elem = $("<div></div>").addClass("message");
-			elem.addClass(chat.mobi == me ? "to" : chat.admin ? "admin" : "from");
-			if(chat.mobi == me)
-				elem.text(chat.msg);
-			else
-				elem.append($("<p></p>").text(chat.name)).append($("<div></div>").text(chat.msg));
+			elem.addClass(chat.admin ? "admin" : "user");
+			elem.append($("<p></p>").text(chat.name)).append($("<div></div>").text(chat.msg));
 			var scroll = $("#chatroom").append(elem).height() - $(window).height() + 101;
 			$(".content").scrollTop(scroll);
 		});
