@@ -19,9 +19,10 @@ public class AuthHandlerInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getRequestURI().startsWith("/user/")) {
-            for (Cookie cookie : request.getCookies())
-                if (cookie.getName().equals("l") && userService.getUser(cookie.getValue()) != null)
-                    return true;
+            if (request.getCookies() != null)
+                for (Cookie cookie : request.getCookies())
+                    if (cookie.getName().equals("l") && userService.getUser(cookie.getValue()) != null)
+                        return true;
             response.sendRedirect("/");
             return false;
         }

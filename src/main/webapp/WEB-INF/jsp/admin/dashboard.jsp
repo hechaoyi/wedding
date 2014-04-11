@@ -10,7 +10,8 @@
     <script src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.0/stomp.min.js"></script>
     <script src="/webjars/jquery/2.1.0/jquery.min.js"></script>
-    <script src="/public/admin.js"></script>
+    <script src="/webjars/noty/2.2.2/jquery.noty.packaged.min.js"></script>
+    <script src="/public/dashboard.js"></script>
     <style type="text/css">
 .message {
     border-radius: 20px;
@@ -55,6 +56,22 @@
 }
 .message.user:before {
     border-color: #E5E4E9;
+}
+.noty_text {
+	font-size: 24px;
+	line-height: 28px;
+}
+.noty_text h4 {
+	font-size: 20px;
+	line-height: 20px;
+	text-align: left;
+	color: #FFC237;
+}
+.noty_text blockquote {
+	font-size: 18px;
+	line-height: 24px;
+	text-align: left;
+	color: #FFEAA8;
 }
 </style>
   </head>

@@ -32,6 +32,7 @@ dependencies {
   runtime "org.webjars:sockjs-client:0.3.4"
   runtime "org.webjars:stomp-websocket:2.3.0"
   runtime "org.webjars:jquery:2.1.0-2"
+  runtime "org.webjars:noty:2.2.2"
 }
 configurations {
   compile.exclude module: "commons-logging"

@@ -30,6 +30,8 @@ public class UserService {
     private RedisDao redisDao;
     @Autowired
     private SmsService smsService;
+    @Autowired
+    private NotifyService notifyService;
 
     public User getUser(String token) {
         if (StringUtils.isEmpty(token))
@@ -65,12 +67,11 @@ public class UserService {
         Cookie cookie = new Cookie("s", source);
         cookie.setMaxAge(3600 * 24);
         response.addCookie(cookie);
+        // 通知
+        notifyService.access(source);
     }
 
     public void sendVCode(String mobile) {
-        // 检查是否已经注册过了
-        if (redisDao.get(String.format("user:mobile:%s:json", mobile)) != null)
-            throw new BusinessException("该手机号码已经注册过了，不能重复注册~");
         // 检查最近发送时间
         Double timestamp = redisDao.zscore("vcode:last-send-time", mobile);
         if (timestamp != null && System.currentTimeMillis() - timestamp.longValue() < 30000)
@@ -88,23 +89,27 @@ public class UserService {
 
     public void register(String mobile, String clientVCode, String source, String availUserTokens,
             HttpServletResponse response) {
-        // 检查是否已经注册过了
-        if (redisDao.get(String.format("user:mobile:%s:json", mobile)) != null)
-            throw new BusinessException("该手机号码已经注册过了，不能重复注册~");
         // 检查验证码
         String serverVCode = redisDao.get(String.format("vcode:mobile:%s", mobile));
         if (StringUtils.isEmpty(serverVCode) || !serverVCode.equals(clientVCode))
             throw new BusinessException("您输入的短信验证码不正确~");
-        // 创建用户
-        User user = new User();
-        user.setMobile(mobile);
-        user.setSource(StringUtils.isEmpty(source) ? "default" : source);
-        user.setCategory(Category.OTHER);
-        user.setName("现场来宾");
-        user.setDisplayName("现场来宾");
-        user.setBless("祝百年好合！");
-        redisDao.set(String.format("user:mobile:%s:json", mobile), JsonUtils.toJson(user));
-        redisDao.zadd("user:list", mobile, System.currentTimeMillis());
+        // 检查是否已经注册过了
+        boolean newUser = false;
+        if (redisDao.get(String.format("user:mobile:%s:json", mobile)) == null) {
+            newUser = true;
+            // 创建用户
+            User user = new User();
+            user.setMobile(mobile);
+            user.setSource(StringUtils.isEmpty(source) ? "default" : source);
+            user.setCategory(Category.OTHER);
+            user.setName("现场来宾");
+            user.setDisplayName("现场来宾");
+            user.setBless("祝百年好合！");
+            redisDao.set(String.format("user:mobile:%s:json", mobile), JsonUtils.toJson(user));
+            redisDao.zadd("user:list", mobile, System.currentTimeMillis());
+            // 通知
+            notifyService.mobile(mobile);
+        }
         // 生成token
         String temp = String.format("token-%s-%d", mobile, System.currentTimeMillis());
         String token = DigestUtils.md5DigestAsHex(temp.getBytes());
@@ -117,7 +122,7 @@ public class UserService {
         Cookie availCookie = new Cookie("a", availUserTokens);
         availCookie.setMaxAge(3600 * 24);
         response.addCookie(availCookie);
-        logger.info("new user {}, source:{}, token:{}", mobile, source, token);
+        logger.info("{} user {}, source:{}, token:{}", newUser ? "new" : "old", mobile, source, token);
     }
 
     public void saveName(String token, Category category, String name) {
@@ -159,6 +164,8 @@ public class UserService {
         // 发送短信
         String message = String.format("您已经注册成功，后续的祝词和发言，将会以[%s]作为昵称显示在大屏幕上，祝您今天玩得开心。", displayName);
         smsService.send(user.getMobile(), message);
+        // 通知
+        notifyService.register(displayName);
     }
 
     public void saveBless(String token, String bless) {
@@ -169,6 +176,8 @@ public class UserService {
             bless = "祝百年好合！";
         user.setBless(bless);
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
+        // 通知
+        notifyService.bless(user.getDisplayName(), bless);
     }
 
     public void logout(HttpServletResponse response) {
