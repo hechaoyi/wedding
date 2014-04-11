@@ -46,4 +46,9 @@ public class AdminController {
         return StdJson.ok();
     }
 
+    @RequestMapping("/remote")
+    public String remote() {
+        return "remote";
+    }
+
 }

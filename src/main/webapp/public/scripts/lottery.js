@@ -56,6 +56,20 @@ $(function() {
 				break;
 			}
 		});
+		stomp.subscribe("/queue/ctrl", function(data) {
+			var btn = $("#lotteryBtn");
+			var event = JSON.parse(data.body);
+			switch(event.event) {
+			case "start":
+				if(btn.is(".btn-positive"))
+					btn.trigger("click");
+				break;
+			case "stop":
+				if(btn.is(".btn-negative"))
+					btn.trigger("click");
+				break;
+			}
+		});
 	}, function() {
 		alert("与服务器的连接断开了，如需重连请刷新");
 	});
