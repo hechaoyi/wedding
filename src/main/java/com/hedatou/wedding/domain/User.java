@@ -9,6 +9,7 @@ public class User {
     private String displayName;
     private String bless;
     private boolean admin;
+    private int weight = 1;
 
     public String getMobile() {
         return mobile;
@@ -64,6 +65,14 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     @Override

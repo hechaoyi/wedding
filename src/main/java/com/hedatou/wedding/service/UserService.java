@@ -39,6 +39,10 @@ public class UserService {
         String mobile = redisDao.get(String.format("user:token:%s:mobile", token));
         if (StringUtils.isEmpty(mobile))
             return null;
+        return getUserByMobile(mobile);
+    }
+
+    public User getUserByMobile(String mobile) {
         String userJson = redisDao.get(String.format("user:mobile:%s:json", mobile));
         User user = JsonUtils.fromJson(userJson, User.class);
         String adminName = redisDao.get(String.format("user:mobile:%s:admin", mobile));
@@ -61,12 +65,21 @@ public class UserService {
         return users;
     }
 
-    public void rememberSource(String source, HttpServletResponse response) {
+    public void rememberSource(String token, String source, HttpServletResponse response) {
         if (StringUtils.isEmpty(source))
             source = "default";
         Cookie cookie = new Cookie("s", source);
         cookie.setMaxAge(3600 * 24);
         response.addCookie(cookie);
+        // 记录来源
+        if (!source.equals("default")) {
+            User user = this.getUser(token);
+            if (user != null) {
+                user.setSource(source);
+                redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
+                logger.info("user {} update source:{}", user.getMobile(), source);
+            }
+        }
         // 通知
         notifyService.access(source);
     }
@@ -167,6 +180,7 @@ public class UserService {
         smsService.send(user.getMobile(), message);
         // 通知
         notifyService.register(displayName);
+        logger.info("user {} save name:{}", user.getMobile(), displayName);
     }
 
     public void saveBless(String token, String bless) {
@@ -179,6 +193,20 @@ public class UserService {
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
         // 通知
         notifyService.bless(user.getDisplayName(), bless);
+        logger.info("user {} save bless:{}", user.getMobile(), bless);
+        if (bless.length() > 30)
+            this.updateWeight(user, user.getWeight() + 1, "祝词很用心");
+    }
+
+    public void updateWeight(User user, int weight, String reason) {
+        if (weight < 0 || weight > 7)
+            return;
+        user.setWeight(weight);
+        redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
+        logger.info("user {} update weight to {}", user.getMobile(), weight);
+        if (weight > 0) {
+            // TODO 通知 短信
+        }
     }
 
     public void logout(HttpServletResponse response) {

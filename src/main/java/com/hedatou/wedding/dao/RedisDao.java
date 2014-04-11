@@ -1,5 +1,7 @@
 package com.hedatou.wedding.dao;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +43,42 @@ public class RedisDao {
         try {
             jedis.setex(key, seconds, value);
             pool.returnResource(jedis);
+        } catch (JedisException e) {
+            pool.returnBrokenResource(jedis);
+            throw e;
+        }
+    }
+
+    public Long incr(String key) {
+        Jedis jedis = pool.getResource();
+        try {
+            Long num = jedis.incr(key);
+            pool.returnResource(jedis);
+            return num;
+        } catch (JedisException e) {
+            pool.returnBrokenResource(jedis);
+            throw e;
+        }
+    }
+
+    public Long zcard(String key) {
+        Jedis jedis = pool.getResource();
+        try {
+            Long count = jedis.zcard(key);
+            pool.returnResource(jedis);
+            return count;
+        } catch (JedisException e) {
+            pool.returnBrokenResource(jedis);
+            throw e;
+        }
+    }
+
+    public Set<String> zrange(String key, long start, long end) {
+        Jedis jedis = pool.getResource();
+        try {
+            Set<String> members = jedis.zrange(key, start, end);
+            pool.returnResource(jedis);
+            return members;
         } catch (JedisException e) {
             pool.returnBrokenResource(jedis);
             throw e;

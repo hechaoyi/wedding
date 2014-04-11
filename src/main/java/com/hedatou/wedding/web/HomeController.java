@@ -27,7 +27,7 @@ public class HomeController {
             @CookieValue(value = "a", required = false) String availUserTokens, String source,
             HttpServletResponse response) {
         // 记录来源
-        userService.rememberSource(source, response);
+        userService.rememberSource(loginUserToken, source, response);
 
         // 登录用户跳转到用户首页
         User user = userService.getUser(loginUserToken);
@@ -64,7 +64,7 @@ public class HomeController {
             @CookieValue(value = "a", required = false) String availUserTokens, HttpServletResponse response) {
         if (userService.register(mobile, vcode, source, availUserTokens, response))
             return StdJson.ok("/register/step2");
-        return StdJson.ok("/");
+        return StdJson.ok("/user/");
     }
 
     @RequestMapping("/register/step2")

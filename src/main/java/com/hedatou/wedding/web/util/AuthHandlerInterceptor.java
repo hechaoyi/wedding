@@ -19,6 +19,23 @@ public class AuthHandlerInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (request.getRequestURI().startsWith("/user/")) {
+            if (getUser(request) != null)
+                return true;
+            response.sendRedirect("/");
+            return false;
+        }
+        if (request.getRequestURI().startsWith("/admin/")) {
+            User user = getUser(request);
+            if (user != null && user.isAdmin())
+                return true;
+            response.sendRedirect("/");
+            return false;
+        }
+        return true;
+    }
+
+    private User getUser(HttpServletRequest request) {
         User user = null;
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -28,19 +45,7 @@ public class AuthHandlerInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         }
-        if (request.getRequestURI().startsWith("/user/")) {
-            if (user != null)
-                return true;
-            response.sendRedirect("/");
-            return false;
-        }
-        if (request.getRequestURI().startsWith("/admin/")) {
-            if (user != null && user.isAdmin())
-                return true;
-            response.sendRedirect("/");
-            return false;
-        }
-        return true;
+        return user;
     }
 
 }
