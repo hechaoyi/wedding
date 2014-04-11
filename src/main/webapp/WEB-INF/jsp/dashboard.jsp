@@ -78,6 +78,9 @@
   <body>
 
     <header class="bar bar-nav">
+      <button class="btn btn-link btn-nav pull-right">
+        去抽奖 <span class="icon icon-right-nav"></span>
+      </button>
       <h1 class="title">和超逸 &amp; 张伟伟 の 结婚典礼</h1>
     </header>
     <div class="content">

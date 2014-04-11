@@ -1,20 +1,17 @@
 $(function() {
-	$.noty.defaults.layout = "top";
-	$.noty.defaults.timeout = 20000;
+	$.noty.defaults.layout = "topRight";
+	$.noty.defaults.timeout = 2000;
 	$.noty.defaults.maxVisible = 5;
-	var token = /\bl=([^;]+)/.exec(document.cookie)[1];
 	var socket = new SockJS("/ws");
 	var stomp = Stomp.over(socket);
 	stomp.connect({}, function() {
-		$("#sendBtn").prop("disabled", false);
 		stomp.subscribe("/topic/chat", function(data) {
 			var chat = JSON.parse(data.body);
-			var elem = $("<div></div>").addClass("message");
-			elem.addClass(chat.admin ? "admin" : "user");
-			elem.append($("<p></p>").text(chat.name)).append($("<div></div>").text(chat.msg));
-			$("#chatroom").prepend(elem.hide());
-			$(".content").scrollTop(0);
-			elem.slideDown("slow");
+			noty({
+				layout: "topLeft",
+				type: "alert",
+				text: chat.name+"说：<br/>"+chat.msg
+			});
 		});
 		stomp.subscribe("/queue/event", function(data) {
 			var event = JSON.parse(data.body);
@@ -39,10 +36,10 @@ $(function() {
 				break;
 			case "BLESS":
 				noty({
-					layout: "center",
+					layout: "top",
 					type: "error",
 					maxVisible: 1,
-					text: "<h4>【"+event.detail.name+"】送出了祝福：</h4><blockquote>"+event.detail.bless+"</blockquote>"
+					text: "【"+event.detail.name+"】送出了祝福："+event.detail.bless
 				});
 				break;
 			}
@@ -50,17 +47,7 @@ $(function() {
 	}, function() {
 		alert("与服务器的连接断开了，如需重连请刷新");
 	});
-	$("#sendBtn").on("click", function() {
-		var msg = $("#messageTxt").val();
-		if(!msg)
-			return;
-		stomp.send("/app/chat", {}, JSON.stringify({
-			token: token,
-			msg: encodeURI(msg)
-		}));
-		$("#messageTxt").val("");
+	$(".bar-nav button.pull-left").on("click", function() {
+		window.location.href = "/admin/dashboard";
 	});
-	$(".bar-nav button.pull-right").on("click", function() {
-		window.location.href = "/admin/lottery";
-	});
-});
+})

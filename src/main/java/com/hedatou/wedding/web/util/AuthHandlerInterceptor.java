@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.hedatou.wedding.domain.User;
 import com.hedatou.wedding.service.UserService;
 
 @ControllerAdvice
@@ -18,11 +19,24 @@ public class AuthHandlerInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        User user = null;
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("l")) {
+                    user = userService.getUser(cookie.getValue());
+                    break;
+                }
+            }
+        }
         if (request.getRequestURI().startsWith("/user/")) {
-            if (request.getCookies() != null)
-                for (Cookie cookie : request.getCookies())
-                    if (cookie.getName().equals("l") && userService.getUser(cookie.getValue()) != null)
-                        return true;
+            if (user != null)
+                return true;
+            response.sendRedirect("/");
+            return false;
+        }
+        if (request.getRequestURI().startsWith("/admin/")) {
+            if (user != null && user.isAdmin())
+                return true;
             response.sendRedirect("/");
             return false;
         }

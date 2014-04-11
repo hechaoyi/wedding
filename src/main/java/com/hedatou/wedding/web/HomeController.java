@@ -62,8 +62,9 @@ public class HomeController {
     @ResponseBody
     public StdJson saveMobile(String mobile, String vcode, @CookieValue(value = "s", required = false) String source,
             @CookieValue(value = "a", required = false) String availUserTokens, HttpServletResponse response) {
-        userService.register(mobile, vcode, source, availUserTokens, response);
-        return StdJson.ok("/register/step2");
+        if (userService.register(mobile, vcode, source, availUserTokens, response))
+            return StdJson.ok("/register/step2");
+        return StdJson.ok("/");
     }
 
     @RequestMapping("/register/step2")

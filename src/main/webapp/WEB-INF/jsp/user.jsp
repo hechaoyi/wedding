@@ -93,9 +93,6 @@
       <div id="explore" class="card control-content">
         探索
       </div>
-      <div id="aboutus" class="card control-content">
-        关于
-      </div>
     </div>
     <div class="bar bar-footer" style="height:37px">
       <input id="messageTxt" type="text" placeholder="消息.."

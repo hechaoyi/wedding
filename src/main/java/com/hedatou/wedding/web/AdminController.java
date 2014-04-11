@@ -20,7 +20,12 @@ public class AdminController {
 
     @RequestMapping("/dashboard")
     public String dashboard() {
-        return "admin/dashboard";
+        return "dashboard";
+    }
+
+    @RequestMapping("/lottery")
+    public String lottery() {
+        return "lottery";
     }
 
 }

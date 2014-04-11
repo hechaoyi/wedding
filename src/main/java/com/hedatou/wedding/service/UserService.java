@@ -87,7 +87,7 @@ public class UserService {
         logger.info("send to {}, vcode:{}", mobile, vcode);
     }
 
-    public void register(String mobile, String clientVCode, String source, String availUserTokens,
+    public boolean register(String mobile, String clientVCode, String source, String availUserTokens,
             HttpServletResponse response) {
         // 检查验证码
         String serverVCode = redisDao.get(String.format("vcode:mobile:%s", mobile));
@@ -123,6 +123,7 @@ public class UserService {
         availCookie.setMaxAge(3600 * 24);
         response.addCookie(availCookie);
         logger.info("{} user {}, source:{}, token:{}", newUser ? "new" : "old", mobile, source, token);
+        return newUser;
     }
 
     public void saveName(String token, Category category, String name) {

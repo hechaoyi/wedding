@@ -24,7 +24,7 @@ public class UserController {
         if (user == null)
             return "redirect:/";
         model.addAttribute("mobile", user.getMobile());
-        return "user/index";
+        return "user";
     }
 
     @RequestMapping("/logout")
