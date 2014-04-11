@@ -2,7 +2,16 @@ package com.hedatou.wedding.web;
 
 public class ChatInputDto {
 
+    private String token;
     private String msg;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getMsg() {
         return msg;

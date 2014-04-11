@@ -8,21 +8,17 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.server.HandshakeHandler;
 
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Autowired
-    private HandshakeHandler authHandshakeHandler;
-    @Autowired
     private ChannelInterceptor clientOutboundChannelInterceptor;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setHandshakeHandler(authHandshakeHandler).withSockJS()
-                .setSessionCookieNeeded(false);
+        registry.addEndpoint("/ws").withSockJS().setSessionCookieNeeded(false);
     }
 
     @Override

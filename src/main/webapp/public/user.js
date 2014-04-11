@@ -14,6 +14,7 @@ $(function() {
 	$("#messageTxt").on("keyup", check);
 	setInterval(check, 1000);
 
+	var token = /\bl=([^;]+)/.exec(document.cookie)[1];
 	var me = $("#mobileHidden").val();
 	var connected = false;
 	var socket = new SockJS("/ws");
@@ -33,7 +34,10 @@ $(function() {
 		});
 	});
 	$("#sendBtn").on("click", function() {
-		stomp.send("/app/chat", {}, JSON.stringify({ msg: encodeURI($("#messageTxt").val()) }));
+		stomp.send("/app/chat", {}, JSON.stringify({
+			token: token,
+			msg: encodeURI($("#messageTxt").val())
+		}));
 		$("#messageTxt").val("");
 		$("#sendBtn").prop("disabled", true);
 	});

@@ -2,7 +2,6 @@ package com.hedatou.wedding.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,9 +17,9 @@ public class WebSocketController {
     private ChatService chatService;
 
     @MessageMapping("/chat")
-    public Chat chat(ChatInputDto chat, Principal principal) throws UnsupportedEncodingException {
+    public Chat chat(ChatInputDto chat) throws UnsupportedEncodingException {
         String msg = URLDecoder.decode(chat.getMsg(), "UTF-8");
-        return chatService.chat(principal.getName(), msg);
+        return chatService.chat(chat.getToken(), msg);
     }
 
 }
