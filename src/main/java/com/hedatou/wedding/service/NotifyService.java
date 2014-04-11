@@ -44,4 +44,12 @@ public class NotifyService {
         messaging.convertAndSend("/queue/event", event);
     }
 
+    public void upgrade(String name, int weight, String reason) {
+        Event event = new Event(EventType.UPGRADE);
+        event.put("name", name);
+        event.put("weight", weight);
+        event.put("reason", reason);
+        messaging.convertAndSend("/queue/event", event);
+    }
+
 }

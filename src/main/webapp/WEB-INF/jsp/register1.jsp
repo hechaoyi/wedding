@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/public/ratchet-2.0.2/css/ratchet-theme-ios.min.css">
     <script src="/public/ratchet-2.0.2/js/ratchet.min.js"></script>
     <script src="/public/zepto-1.1.3/zepto.min.js"></script>
-    <script src="/public/register1.js"></script>
+    <script src="/public/scripts/register1.js"></script>
   </head>
   <body>
 

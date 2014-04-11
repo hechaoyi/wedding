@@ -10,7 +10,8 @@ public class Event {
         ACCESS, // 访问
         MOBILE, // 绑定手机号
         REGISTER, // 注册
-        BLESS; // 祝词
+        BLESS, // 祝词
+        UPGRADE; // 提升幸运值
     }
 
     private final EventType type;

@@ -11,7 +11,7 @@
     <script src="/webjars/sockjs-client/0.3.4/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.0/stomp.min.js"></script>
     <script src="/public/zepto-1.1.3/zepto.min.js"></script>
-    <script src="/public/user.js"></script>
+    <script src="/public/scripts/user.js"></script>
     <style type="text/css">
 .message {
     border-radius: 8px;

@@ -221,7 +221,11 @@ public class UserService {
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
         logger.info("user {} update weight to {}, cause:{}", user.getMobile(), weight, reason);
         if (notify) {
-            // TODO 通知 短信
+            // 通知
+            notifyService.upgrade(user.getDisplayName(), weight, reason);
+            // 发送短信
+            String message = String.format("由于【%s】，您的幸运值已经提升到%d，抽奖环节会有更高的几率中奖，祝您今天玩得开心。", reason, weight);
+            smsService.send(user.getMobile(), message);
         }
     }
 

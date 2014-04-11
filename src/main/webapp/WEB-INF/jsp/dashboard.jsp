@@ -11,7 +11,7 @@
     <script src="/webjars/stomp-websocket/2.3.0/stomp.min.js"></script>
     <script src="/webjars/jquery/2.1.0/jquery.min.js"></script>
     <script src="/webjars/noty/2.2.2/jquery.noty.packaged.min.js"></script>
-    <script src="/public/dashboard.js"></script>
+    <script src="/public/scripts/dashboard.js"></script>
     <style type="text/css">
 .message {
     border-radius: 20px;

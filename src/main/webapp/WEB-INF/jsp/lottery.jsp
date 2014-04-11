@@ -12,7 +12,7 @@
     <script src="/webjars/jquery/2.1.0/jquery.min.js"></script>
     <script src="/webjars/noty/2.2.2/jquery.noty.packaged.min.js"></script>
     <script src="/webjars/jquery-transit/0.9.9/jquery-transit.min.js"></script>
-    <script src="/public/lottery.js"></script>
+    <script src="/public/scripts/lottery.js"></script>
     <style type="text/css">
 .noty_text {
 	font-size: 18px;

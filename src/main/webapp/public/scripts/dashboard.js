@@ -45,6 +45,13 @@ $(function() {
 					text: "<h4>【"+event.detail.name+"】送出了祝福：</h4><blockquote>"+event.detail.bless+"</blockquote>"
 				});
 				break;
+			case "UPGRADE":
+				noty({
+					type: "error",
+					text: "恭喜【"+event.detail.name+"】由于【"+event.detail.reason+
+						"】，幸运值提升到了"+event.detail.weight+"，抽奖环节中奖几率有额外加成哦~"
+				});
+				break;
 			}
 		});
 	}, function() {
