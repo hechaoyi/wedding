@@ -33,7 +33,7 @@ public class ChatService {
         // 聊天计数，发言活跃加幸运值
         Long count = redisDao.incr(String.format("chat:mobile:%:count", user.getMobile()));
         if (count != null && (count == 1 || count == 10 || count == 30 || count == 60 || count == 100))
-            userService.updateWeight(user, user.getWeight() + 1, String.format("发言%d次", count));
+            userService.updateWeight(user, user.getWeight() + 1, String.format("发言%d次", count), true);
         return chat;
     }
 

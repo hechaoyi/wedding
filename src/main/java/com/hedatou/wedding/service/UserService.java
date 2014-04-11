@@ -1,6 +1,7 @@
 package com.hedatou.wedding.service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.hedatou.wedding.common.JsonUtils;
 import com.hedatou.wedding.dao.RedisDao;
@@ -37,18 +39,22 @@ public class UserService {
         if (StringUtils.isEmpty(token))
             return null;
         String mobile = redisDao.get(String.format("user:token:%s:mobile", token));
-        if (StringUtils.isEmpty(mobile))
-            return null;
         return getUserByMobile(mobile);
     }
 
     public User getUserByMobile(String mobile) {
+        if (StringUtils.isEmpty(mobile))
+            return null;
         String userJson = redisDao.get(String.format("user:mobile:%s:json", mobile));
         User user = JsonUtils.fromJson(userJson, User.class);
         String adminName = redisDao.get(String.format("user:mobile:%s:admin", mobile));
         if (!StringUtils.isEmpty(adminName)) {
             user.setDisplayName(adminName);
             user.setAdmin(true);
+            if (user.getWeight() > 0) {
+                this.updateWeight(user, 0, "管理员不能抽奖", false);
+                logger.info("admin {} weight degraded", mobile);
+            }
         }
         return user;
     }
@@ -60,6 +66,16 @@ public class UserService {
         for (String token : Splitter.on(",").trimResults().omitEmptyStrings().split(tokens)) {
             User user = this.getUser(token);
             if (user != null)
+                users.add(user);
+        }
+        return users;
+    }
+
+    public List<User> findUsersBySource(String source) {
+        List<User> users = Lists.newArrayList();
+        for (String mobile : redisDao.zrange("user:list", 0, -1)) {
+            User user = this.getUserByMobile(mobile);
+            if (user.getSource().equals(source))
                 users.add(user);
         }
         return users;
@@ -195,16 +211,16 @@ public class UserService {
         notifyService.bless(user.getDisplayName(), bless);
         logger.info("user {} save bless:{}", user.getMobile(), bless);
         if (bless.length() > 30)
-            this.updateWeight(user, user.getWeight() + 1, "祝词很用心");
+            this.updateWeight(user, user.getWeight() + 1, "祝词很用心", true);
     }
 
-    public void updateWeight(User user, int weight, String reason) {
-        if (weight < 0 || weight > 7)
+    public void updateWeight(User user, int weight, String reason, boolean notify) {
+        if (weight < 0 || weight > 7 || user.isAdmin())
             return;
         user.setWeight(weight);
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
-        logger.info("user {} update weight to {}", user.getMobile(), weight);
-        if (weight > 0) {
+        logger.info("user {} update weight to {}, cause:{}", user.getMobile(), weight, reason);
+        if (notify) {
             // TODO 通知 短信
         }
     }

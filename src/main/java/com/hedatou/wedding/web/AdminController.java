@@ -39,4 +39,11 @@ public class AdminController {
         return StdJson.ok(lotteryService.roll(count));
     }
 
+    @RequestMapping("/report")
+    @ResponseBody
+    public StdJson report(String mobile) {
+        lotteryService.report(mobile);
+        return StdJson.ok();
+    }
+
 }

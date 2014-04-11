@@ -99,6 +99,10 @@ $(function() {
 			$(".card:animated").stop(true);
 			var panel = $("#panel");
 			var king = $(".card.king").css({ zIndex: 10000 });
+			$.post("/admin/report", { mobile: king.data("mobile") }, function(data) {
+				if(!data || data.code != 0)
+					alert(data ? data.msg : "服务器出错啦~请稍后再试");
+			});
 			king.transition({ rotate: "20deg" }, 300)
 				.transition({ rotate: "-20deg" }, 300)
 				.transition({
@@ -143,7 +147,7 @@ $(function() {
 			src.opacity = 0;
 			dst.opacity = [1, "inout"];
 			var duration = Math.floor(Math.random()*500*this.weight+2000);
-			$("<div></div>").css(src)
+			$("<div></div>").css(src).data("mobile", this.mobile)
 				.addClass("card color" + Math.floor(Math.random()*7+1))
 				.append($("<h4></h4>").text(this.displayName)
 					.append($("<small></small>").text("["+this.mobile+"]")))
