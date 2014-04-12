@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class HomeController {
     @RequestMapping("/")
     public String index(@CookieValue(value = "l", required = false) String loginUserToken,
             @CookieValue(value = "a", required = false) String availUserTokens, String source,
-            HttpServletResponse response) {
+            HttpServletResponse response, Model model) {
         // 记录来源
         userService.rememberSource(loginUserToken, source, response);
 
@@ -38,7 +39,8 @@ public class HomeController {
         // 可登录列表不为空，显示列表页
         Set<User> users = userService.getUsers(availUserTokens);
         if (!CollectionUtils.isEmpty(users)) {
-            return "list"; // TODO
+            model.addAttribute("users", users);
+            return "login";
         }
 
         // 首次访问，显示注册页
@@ -91,6 +93,19 @@ public class HomeController {
     public StdJson saveBless(@CookieValue(value = "l", required = false) String token, String bless) {
         userService.saveBless(token, bless);
         return StdJson.ok("/user/");
+    }
+
+    @RequestMapping("/login")
+    public String login(String mobile, @CookieValue(value = "a", required = false) String availUserTokens,
+            HttpServletResponse response) {
+        Set<User> users = userService.getUsers(availUserTokens);
+        for (User user : users) {
+            if (user.getMobile().equals(mobile)) {
+                userService.login(mobile, availUserTokens, response);
+                return "redirect:/user/";
+            }
+        }
+        return "redirect:/";
     }
 
 }

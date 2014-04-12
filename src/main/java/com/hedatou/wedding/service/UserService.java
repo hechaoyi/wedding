@@ -139,6 +139,12 @@ public class UserService {
             // 通知
             notifyService.mobile(mobile);
         }
+        String token = this.login(mobile, availUserTokens, response);
+        logger.info("{} user {}, source:{}, token:{}", newUser ? "new" : "old", mobile, source, token);
+        return newUser;
+    }
+
+    public String login(String mobile, String availUserTokens, HttpServletResponse response) {
         // 生成token
         String temp = String.format("token-%s-%d", mobile, System.currentTimeMillis());
         String token = DigestUtils.md5DigestAsHex(temp.getBytes());
@@ -151,8 +157,7 @@ public class UserService {
         Cookie availCookie = new Cookie("a", availUserTokens);
         availCookie.setMaxAge(3600 * 24);
         response.addCookie(availCookie);
-        logger.info("{} user {}, source:{}, token:{}", newUser ? "new" : "old", mobile, source, token);
-        return newUser;
+        return token;
     }
 
     public void saveName(String token, Category category, String name) {
@@ -235,8 +240,9 @@ public class UserService {
     }
 
     public void logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie("l", "");
+        Cookie cookie = new Cookie("l", null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
         response.addCookie(cookie);
     }
 
