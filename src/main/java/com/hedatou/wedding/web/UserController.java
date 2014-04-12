@@ -33,4 +33,17 @@ public class UserController {
         return "redirect:/";
     }
 
+    @RequestMapping("/menu")
+    public String menu() {
+        return "menu";
+    }
+
+    @RequestMapping("/upgrade")
+    public String upgrade(@CookieValue(value = "l", required = false) String token, String name, String passcode) {
+        if (!"X".equals(passcode))
+            return "redirect:/user/";
+        userService.toAdmin(token, name);
+        return "redirect:/admin/";
+    }
+
 }

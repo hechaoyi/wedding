@@ -28,8 +28,6 @@ public class LotteryService {
     private RedisDao redisDao;
     @Autowired
     private UserService userService;
-    @Autowired
-    private SmsService smsService;
     private Random random = new Random();
 
     public void report(String mobile) {
@@ -47,9 +45,6 @@ public class LotteryService {
                     userService.updateWeight(sibling, sibling.getWeight() - 1, "同桌中奖了", false);
             }
         }
-        // 发短信祝贺
-        String message = String.format("恭喜您中奖了，顺祝您财源广进，万事如意。");
-        smsService.send(user.getMobile(), message);
     }
 
     public List<User> roll(int count) {

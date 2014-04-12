@@ -57,6 +57,8 @@ $(function() {
 			}
 		});
 		stomp.subscribe("/queue/ctrl", function(data) {
+			if($("#remoteEnableBtn").is(".btn-positive"))
+				return;
 			var btn = $("#lotteryBtn");
 			var event = JSON.parse(data.body);
 			switch(event.event) {
@@ -75,6 +77,10 @@ $(function() {
 	});
 	$(".bar-nav button.pull-left").on("click", function() {
 		window.location.href = "/admin/dashboard";
+	});
+	$("#remoteEnableBtn").on("click", function() {
+		var enable = $(this).is(".btn-positive");
+		$(this).toggleClass("btn-positive btn-negative").text(enable ? "禁用遥控" : "启用遥控");
 	});
 	var timer1 = null, timer2 = null;
 	$("#lotteryBtn").on("click", function() {

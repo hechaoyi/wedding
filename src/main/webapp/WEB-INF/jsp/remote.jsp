@@ -58,6 +58,19 @@ var socket = new SockJS("/ws");
 var stomp = Stomp.over(socket);
 stomp.connect({}, function() {
 	$(".text").text("已经连接，等待开始..");
+	stomp.subscribe("/queue/ctrl", function(data) {
+		var event = JSON.parse(data.body);
+		switch(event.event) {
+		case "start":
+			$(".switch").addClass("checked");
+			$(".text").text("已经开始");
+			break;
+		case "stop":
+			$(".switch").removeClass("checked");
+			$(".text").text("等待开始..");
+			break;
+		}
+	});
 }, function() {
 	$(".text").text("与服务器的连接断开了，如需重连请刷新");
 });

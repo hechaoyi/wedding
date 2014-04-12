@@ -73,6 +73,9 @@
       <h1 class="title">和超逸 &amp; 张伟伟 の 结婚典礼</h1>
     </header>
     <div class="content" id="panel" style="overflow:hidden"></div>
+    <div style="position:fixed; bottom:0px; right:120px; width:100px;">
+      <button id="remoteEnableBtn" class="btn btn-positive btn-block">启用遥控</button>
+    </div>
     <div style="position:fixed; bottom:0px; right:10px; width:100px;">
       <button id="lotteryBtn" class="btn btn-positive btn-block">开始</button>
     </div>

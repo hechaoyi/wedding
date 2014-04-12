@@ -240,4 +240,11 @@ public class UserService {
         response.addCookie(cookie);
     }
 
+    public void toAdmin(String token, String name) {
+        User user = this.getUser(token);
+        if (user == null)
+            throw new BusinessException("未登录");
+        redisDao.set(String.format("user:mobile:%s:admin", user.getMobile()), name);
+    }
+
 }
