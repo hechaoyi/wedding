@@ -34,27 +34,27 @@
             </li>
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
               <input type="radio" name="category" value="neu_classmate" id="category_neu_classmate" />
-              <label for="category_neu_classmate" style="margin-left:20px">东北大学同学</label>
+              <label for="category_neu_classmate" style="margin-left:20px">东北大学同学及家属</label>
             </li>
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
               <input type="radio" name="category" value="male_classmate" id="category_male_classmate" />
-              <label for="category_male_classmate" style="margin-left:20px">新郎和超逸的同学</label>
+              <label for="category_male_classmate" style="margin-left:20px">新郎和超逸的同学及家属</label>
             </li>
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
               <input type="radio" name="category" value="female_workmate" id="category_female_workmate" />
-              <label for="category_female_workmate" style="margin-left:20px">新娘张伟伟的同事</label>
+              <label for="category_female_workmate" style="margin-left:20px">新娘张伟伟的同事及家属</label>
             </li>
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
               <input type="radio" name="category" value="male_father_friend" id="category_male_father_friend" />
-              <label for="category_male_father_friend" style="margin-left:20px">新郎父亲的同事和朋友</label>
+              <label for="category_male_father_friend" style="margin-left:20px">新郎父亲的同事朋友及家属</label>
             </li>
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
               <input type="radio" name="category" value="male_mother_friend" id="category_male_mother_friend" />
-              <label for="category_male_mother_friend" style="margin-left:20px">新郎母亲的同事和朋友</label>
+              <label for="category_male_mother_friend" style="margin-left:20px">新郎母亲的同事朋友及家属</label>
             </li>
             <li class="table-view-cell" style="padding-top:3px; padding-bottom:3px;">
               <input type="radio" name="category" value="other" id="category_other" />
-              <label for="category_other" style="margin-left:20px">其他亲朋好友</label>
+              <label for="category_other" style="margin-left:20px">亲朋好友</label>
             </li>
           </ul>
           <button id="submitBtn" class="btn btn-primary btn-block" disabled="disabled">下一步</button>

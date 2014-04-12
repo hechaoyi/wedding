@@ -165,37 +165,40 @@ public class UserService {
         String displayName;
         switch (category) {
         case MALE_FAMILY:
-            displayName = family ? ("新郎的" + name) : ("新郎的家人" + name);
+            displayName = family ? ("新郎的" + name) : ("新郎家人" + name);
             break;
         case FEMALE_FAMILY:
-            displayName = family ? ("新娘的" + name) : ("新娘的家人" + name);
+            displayName = family ? ("新娘的" + name) : ("新娘家人" + name);
             break;
         case NEU_CLASSMATE:
             displayName = "东大同学" + name;
             break;
         case MALE_CLASSMATE:
-            displayName = "新郎的同学" + name;
+            displayName = "新郎同学" + name;
             break;
         case FEMALT_WORKMATE:
-            displayName = "新娘的同事" + name;
+            displayName = "新娘同事" + name;
             break;
         case MALE_FATHER_FRIEND:
-            displayName = "新郎父亲的好友" + name;
+            displayName = "新郎父亲好友" + name;
             break;
         case MALE_MOTHER_FRIEND:
-            displayName = "新郎母亲的好友" + name;
+            displayName = "新郎母亲好友" + name;
             break;
         default:
             displayName = "现场来宾" + name;
             break;
         }
+        boolean newName = user.getDisplayName().equals("现场来宾");
         user.setDisplayName(displayName);
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));
-        // 发送短信
-        String message = String.format("您已经注册成功，后续的祝词和发言，将会以[%s]作为昵称显示在大屏幕上，祝您今天玩得开心。", displayName);
-        smsService.send(user.getMobile(), message);
-        // 通知
-        notifyService.register(displayName);
+        if (newName) {
+            // 发送短信
+            String message = String.format("您已经注册成功，后续的祝词和发言，将会以[%s]作为昵称显示在大屏幕上，祝您今天玩得开心。", displayName);
+            smsService.send(user.getMobile(), message);
+            // 通知
+            notifyService.register(displayName);
+        }
         logger.info("user {} save name:{}", user.getMobile(), displayName);
     }
 
@@ -215,7 +218,9 @@ public class UserService {
     }
 
     public void updateWeight(User user, int weight, String reason, boolean notify) {
-        if (weight < 0 || weight > 7 || user.isAdmin())
+        if (weight < 0 || weight > 7)
+            return;
+        if (user.isAdmin() && weight > 0)
             return;
         user.setWeight(weight);
         redisDao.set(String.format("user:mobile:%s:json", user.getMobile()), JsonUtils.toJson(user));

@@ -81,17 +81,12 @@
       <div class="segmented-control">
         <a class="control-item active chat" href="#chatroom">聊天</a>
         <a class="control-item" href="#blessing">祝词</a>
-        <a class="control-item" href="#explore">探索</a>
-        <a class="control-item" href="#aboutus">关于</a>
       </div>
     </header>
     <div class="content">
       <div id="chatroom" class="content-padded control-content active" style="margin-bottom:47px"></div>
       <div id="blessing" class="card control-content">
         祝词
-      </div>
-      <div id="explore" class="card control-content">
-        探索
       </div>
     </div>
     <div class="bar bar-footer" style="height:37px">

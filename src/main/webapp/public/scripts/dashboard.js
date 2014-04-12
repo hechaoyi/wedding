@@ -1,6 +1,6 @@
 $(function() {
 	$.noty.defaults.layout = "top";
-	$.noty.defaults.timeout = 20000;
+	$.noty.defaults.timeout = 10000;
 	$.noty.defaults.maxVisible = 5;
 	var token = /\bl=([^;]+)/.exec(document.cookie)[1];
 	var socket = new SockJS("/ws");
