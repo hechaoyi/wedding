@@ -86,7 +86,10 @@
     <div class="content">
       <div id="chatroom" class="content-padded control-content active" style="margin-bottom:47px"></div>
       <div id="blessing" class="card control-content">
-        祝词
+        <div class="content-padded">
+          <textarea id="blessTxt" rows="3">${bless}</textarea>
+          <button id="submitBtn" class="btn btn-primary btn-block">提交</button>
+        </div>
       </div>
     </div>
     <div class="bar bar-footer" style="height:37px">

@@ -24,6 +24,7 @@ public class UserController {
         if (user == null)
             return "redirect:/";
         model.addAttribute("mobile", user.getMobile());
+        model.addAttribute("bless", user.getBless());
         return "user";
     }
 
