@@ -57,10 +57,15 @@ $(function() {
 			}
 		});
 		stomp.subscribe("/queue/ctrl", function(data) {
-			if($("#remoteEnableBtn").is(".btn-positive"))
-				return;
-			var btn = $("#lotteryBtn");
 			var event = JSON.parse(data.body);
+			if($("#remoteEnableBtn").is(".btn-positive")) {
+				noty({
+					type: "alert",
+					text: "遥控点击，"+(event.event=="start"?"开始":event.event=="stop"?"停":"")+"！"
+				});
+				return;
+			}
+			var btn = $("#lotteryBtn");
 			switch(event.event) {
 			case "start":
 				if(btn.is(".btn-positive"))
